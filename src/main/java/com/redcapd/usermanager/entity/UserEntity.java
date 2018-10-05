@@ -2,6 +2,7 @@ package com.redcapd.usermanager.entity;
 
 import javax.persistence.*;
 
+
 @Entity
 @Table(name = "user", schema = "redcapd")
 public class UserEntity {

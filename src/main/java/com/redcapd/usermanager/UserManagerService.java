@@ -1,68 +1,51 @@
 package com.redcapd.usermanager;
 
 import com.redcapd.usermanager.entity.UserEntity;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import javax.ws.rs.POST;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
-import org.springframework.security.crypto.bcrypt.BCrypt;
+import java.util.List;
 
 
 @Path("/usrmng")
 public class UserManagerService {
 
-    @GET
-    @Path("/get")
-    @Produces("text/html")
-    public Response getUser(@QueryParam("id") int id){
-        Session session = getSession();
-        UserEntity user = session.get(UserEntity.class, new Integer(id));
-        return (user != null) ? Response.status(200).entity(user).build() : Response.status(200).entity("Nessun utente trovato!").build();
-    }
+    private UserManagerDao userManagerDao;
+
 
     @POST
     @Path("/add")
     @Produces("text/html")
-    public Response addUser(@QueryParam("usr") String usr,
-                            @QueryParam("psw") String psw,
-                            @QueryParam("eml") String email,
-                            @QueryParam("lng") int lang){
-        Session session = getSession();
-        session.beginTransaction();
-        String responseString = "OK";
-        try{
-            UserEntity user = new UserEntity();
-            user.setUsername(usr);
-            user.setPassword(psw);
-            user.setEmail(email);
-            user.setLanguageId(lang);
-            // Generazione del salt
-            user.setSalt(BCrypt.gensalt());
-            session.save(user);
-            session.getTransaction().commit();
-        }
-        catch(HibernateException e){
-            session.getTransaction().rollback();
-            responseString = "BAD";
-        }
+    public Response addUser(@FormParam("usr") String usr,
+                            @FormParam("psw") String psw,
+                            @FormParam("eml") String email,
+                            @FormParam("lng") int lang){
+        userManagerDao = UserManagerDao.getInstance();
+        String responseString = (userManagerDao.createUser(usr,psw,email,lang) > 0) ? "OK" : "BAD";
         return Response.status(200).entity(responseString).build();
     }
 
+
     @GET
-    @Path("/sample")
-    @Produces("text/html")
-    public Response sample2(){
-        return Response.status(200).entity("Nessun record trovato!").build();
+    @Path("/get")
+    @Produces("application/json")
+    public Response getUser(@QueryParam("id") int id){
+        userManagerDao = UserManagerDao.getInstance();
+        List<UserEntity> users = userManagerDao.getAllUsers();
+        JSONArray jsonArray = new JSONArray();
+        for(UserEntity usr : users){
+            JSONObject obj = new JSONObject();
+            obj.put("id",usr.getId());
+            obj.put("username",usr.getUsername());
+            obj.put("password",usr.getPassword());
+            obj.put("salt",usr.getSalt());
+            obj.put("email",usr.getEmail());
+            obj.put("language_id",usr.getLanguageId());
+            jsonArray.put(obj);
+        }
+        return Response.status(200).entity(jsonArray).build();
     }
 
-
-    private static Session getSession(){
-        SessionFactory sessionFactory = HibernateUtil.buildSessionFactory();
-        return sessionFactory.openSession();
-    }
 }
