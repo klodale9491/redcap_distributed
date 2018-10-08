@@ -1,13 +1,13 @@
 package com.redcapd.usermanager;
 
 import com.redcapd.usermanager.entity.UserEntity;
-import org.hibernate.HibernateException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.persistence.*;
 import java.util.List;
 
-@ApplicationScoped
+
+@RequestScoped
 public class UserManagerDao {
 	EntityManagerFactory entityManagerfactory;
 	EntityManager entityManager;
@@ -27,21 +27,13 @@ public class UserManagerDao {
 
 	public int createUser(String usr, String psw, String email, int lang) {
 		UserEntity user = new UserEntity();
-		try{
-			user.setUsername(usr);
-			user.setPassword(psw);
-			user.setEmail(email);
-			user.setLanguageId(lang);
-			user.setSalt(BCrypt.gensalt());// Generazione del salt
-			entityManager.persist(user);
-			return 1;
-		}
-		catch(HibernateException e){
-			e.printStackTrace();
-		}
-		finally{
-			entityManager.close();
-		}
+		user.setUsername(usr);
+		user.setPassword(psw);
+		user.setEmail(email);
+		user.setLanguageId(lang);
+		user.setSalt(BCrypt.gensalt());// Generazione del salt
+		entityManager.persist(user);
+		entityManager.close();
 		return 0;
 	}
 
