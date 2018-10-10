@@ -1,14 +1,16 @@
 package com.redcapd.usermanager;
 
 import com.redcapd.usermanager.entity.UserEntity;
+import org.hibernate.HibernateException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 
-@RequestScoped
-public class UserManagerDao {
+@SessionScoped
+public class UserManagerDao implements Serializable {
 	EntityManagerFactory entityManagerfactory;
 	EntityManager entityManager;
 
@@ -25,24 +27,75 @@ public class UserManagerDao {
 		return users;
 	}
 
+	public UserEntity getUser(int id){
+		UserEntity user = entityManager.find(UserEntity.class, id);
+		if(user == null){
+			throw new EntityNotFoundException("Nessun utente trovato con ID = " + id);
+		}
+		return user;
+	}
+
 	public int createUser(String usr, String psw, String email, int lang) {
+		EntityTransaction transaction = entityManager.getTransaction();
 		UserEntity user = new UserEntity();
 		user.setUsername(usr);
 		user.setPassword(psw);
 		user.setEmail(email);
 		user.setLanguageId(lang);
 		user.setSalt(BCrypt.gensalt());// Generazione del salt
-		entityManager.persist(user);
-		entityManager.close();
-		return 0;
+		try{
+			transaction.begin();
+			entityManager.persist(user);
+			transaction.commit();
+			return 0;
+		}
+		catch(HibernateException e){
+			e.printStackTrace();
+			transaction.rollback();
+			return -1;
+		}
+		finally{
+			entityManager.close();
+		}
 	}
 
-	public boolean updateUser(int uid, String psw, String email, String lang) {
-		return false;
+	public int updateUser(int id, String usr,String psw,String eml,int lng){
+		EntityTransaction transaction = entityManager.getTransaction();
+		UserEntity user = entityManager.find(UserEntity.class, id);
+		if(user != null){
+			user.setUsername(usr);
+			user.setPassword(psw);
+			user.setEmail(eml);
+			user.setLanguageId(lng);
+			try{
+				transaction.begin();
+				entityManager.persist(user);
+				transaction.commit();
+				return 0;
+			}
+			catch(HibernateException e){
+				e.printStackTrace();
+				transaction.rollback();
+				return -1;
+			}
+		}
+		return -2;
 	}
 
-	public boolean deleteUser(int uid) {
-		return false;
+	public int deleteUser(int id) {
+		EntityTransaction transaction = entityManager.getTransaction();
+		UserEntity user = entityManager.find(UserEntity.class, id);
+		try{
+			transaction.begin();
+			entityManager.remove(user);
+			transaction.commit();
+			return 0;
+		}
+		catch(HibernateException e){
+			e.printStackTrace();
+			transaction.rollback();
+			return -1;
+		}
 	}
 
 }

@@ -14,6 +14,7 @@ public class UserEntity {
     private int language_id;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public int getId() {
         return id;
