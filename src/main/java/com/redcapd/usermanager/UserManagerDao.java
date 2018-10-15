@@ -1,5 +1,6 @@
 package com.redcapd.usermanager;
 
+import com.redcapd.usermanager.entity.User;
 import com.redcapd.usermanager.entity.UserEntity;
 import org.hibernate.HibernateException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -25,6 +26,17 @@ public class UserManagerDao implements Serializable {
 		Query query = entityManager.createQuery(hql);
 		List<UserEntity> users = query.getResultList();
 		return users;
+	}
+
+	public User getUserByUsername(String username) {
+		try{
+			UserEntity user = entityManager.find(UserEntity.class, username);
+			return user.toUser();
+		}
+		catch(EntityNotFoundException e){
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	public UserEntity getUser(int id){

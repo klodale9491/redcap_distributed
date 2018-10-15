@@ -99,4 +99,14 @@ public class UserEntity {
         result = 31 * result + (email != null ? email.hashCode() : 0);
         return result;
     }
+
+    public User toUser(){
+        User user = new User();
+        user.setUsername(this.username);
+        user.setPassword(this.password);
+        user.setEmail(this.email);
+        user.setLanguage_id(this.language_id);
+        user.setSalt(this.salt);
+        return user;
+    }
 }

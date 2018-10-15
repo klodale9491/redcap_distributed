@@ -5,5 +5,5 @@ import javax.ws.rs.core.Application;
 
 @ApplicationPath("api")
 public class UserManagerApplication extends Application {
-
+    // Senza questa non funziona.
 }
