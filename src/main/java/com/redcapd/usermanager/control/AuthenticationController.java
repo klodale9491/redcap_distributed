@@ -4,11 +4,11 @@ import com.redcapd.usermanager.UserManagerDao;
 import com.redcapd.usermanager.entity.User;
 import org.jose4j.jwe.JsonWebEncryption;
 
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 
-@SessionScoped
+@ApplicationScoped
 public class AuthenticationController {
     @Inject
     UserManagerDao userManagerDao;
@@ -16,6 +16,6 @@ public class AuthenticationController {
 
     public JsonWebEncryption authenticateUser(String username, String password){
         User user = userManagerDao.getUserByUsername(username);
-
+        return null;
     }
 }

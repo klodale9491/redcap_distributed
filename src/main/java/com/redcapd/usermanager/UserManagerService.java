@@ -29,10 +29,12 @@ public class UserManagerService {
         try{
             JsonWebEncryption jsonToken = authenticationController.authenticateUser(usr,psw);
             // Stacco il token ...
+            return null;
 
         }
         catch(EntityNotFoundException e){
             e.printStackTrace();
+            return null;
         }
     }
     //
