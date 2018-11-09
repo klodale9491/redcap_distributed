@@ -4,6 +4,7 @@ import com.redcapd.usermanager.entity.User;
 import com.redcapd.usermanager.entity.UserEntity;
 import org.hibernate.HibernateException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+
 import javax.enterprise.context.SessionScoped;
 import javax.persistence.*;
 import java.io.Serializable;

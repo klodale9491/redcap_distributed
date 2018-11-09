@@ -1,13 +1,14 @@
 package com.redcapd.metadatamanager.entity;
 
 import javax.persistence.*;
-import java.util.List;
+
 
 @Entity
 @Table(name = "form", schema = "redcapd")
 public class FormEntity {
     private long id;
     private String name;
+    private ProjectEntity project;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,25 +30,14 @@ public class FormEntity {
         this.name = name;
     }
 
-    private ProjectEntity manyToOne;
 
     @ManyToOne
-    public ProjectEntity getManyToOne() {
-        return manyToOne;
+    public ProjectEntity getProject() {
+        return project;
     }
 
-    public void setManyToOne(ProjectEntity manyToOne) {
-        this.manyToOne = manyToOne;
+    public void setProject(ProjectEntity project) {
+        this.project = project;
     }
 
-    private List<ProjectEntity> oneToMany;
-
-    @OneToMany
-    public List<ProjectEntity> getOneToMany() {
-        return oneToMany;
-    }
-
-    public void setOneToMany(List<ProjectEntity> oneToMany) {
-        this.oneToMany = oneToMany;
-    }
 }

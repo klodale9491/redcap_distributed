@@ -1,5 +1,6 @@
 package com.redcapd.usermanager;
 
+
 import com.redcapd.usermanager.control.AuthenticationController;
 import com.redcapd.usermanager.entity.UserEntity;
 import org.jose4j.jwe.JsonWebEncryption;
@@ -18,6 +19,7 @@ public class UserManagerService {
     @Inject
     private UserManagerDao userManagerDao;
     @Inject
+
     private AuthenticationController authenticationController;
 
 
