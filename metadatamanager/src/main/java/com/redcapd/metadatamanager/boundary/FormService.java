@@ -23,30 +23,49 @@ public class FormService {
     }
 
     @GET
-    @Path("{id}")
+    @Path("{fid}")
     @Produces("application/json")
-    public Response getFormById(@PathParam("id") long id){
-
+    public Response getFormById(@PathParam("fid") long fid){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("MyPersistenceUnit");
+        em = emf.createEntityManager();
+        List forms = em.createNativeQuery("SELECT id,name FROM form WHERE id = :fid").setParameter("fid", fid).getResultList();
+        return Response.status(200).entity(forms).build();
     }
 
     @POST
     @Consumes("application/json")
     @Produces("application/json")
     public Response creteForm(FormEntity form){
-
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("MyPersistenceUnit");
+        em = emf.createEntityManager();
+        em.getTransaction().begin();
+        em.persist(form); // fa INSERT
+        em.getTransaction().commit();
+        return Response.status(200).build();
     }
 
     @DELETE
     @Path("{id}")
     @Produces("application/json")
     public Response deleteForm(@PathParam("id") long id){
-
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("MyPersistenceUnit");
+        em = emf.createEntityManager();
+        em.getTransaction().begin();
+        FormEntity form = em.find(FormEntity.class,id);
+        em.remove(form); // fa DELETE
+        em.getTransaction().commit();
+        return Response.status(200).build();
     }
 
     @PUT
     @Consumes("application/json")
     @Produces("application/json")
     public Response updateForm(FormEntity form){
-
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("MyPersistenceUnit");
+        em = emf.createEntityManager();
+        em.getTransaction().begin();
+        em.merge(form);// se metto id fa UPDATE, altrimenti da INSERT
+        em.getTransaction().commit();
+        return Response.status(200).build();
     }
 }

@@ -5,12 +5,19 @@ import javax.persistence.*;
 @Entity
 @Table(name = "field", schema = "redcapd", catalog = "")
 public class FieldEntity {
-    private int id;
-    private String label;
-    private String variable;
-
     @Id
     @Column(name = "id", nullable = false)
+    private int id;
+    @Basic
+    @Column(name = "label", nullable = false, length = 255)
+    private String label;
+    @Basic
+    @Column(name = "variable", nullable = false, length = 255)
+    private String variable;
+    @ManyToOne
+    private FormEntity form;
+
+
     public int getId() {
         return id;
     }
@@ -19,8 +26,6 @@ public class FieldEntity {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "label", nullable = false, length = 255)
     public String getLabel() {
         return label;
     }
@@ -29,14 +34,20 @@ public class FieldEntity {
         this.label = label;
     }
 
-    @Basic
-    @Column(name = "variable", nullable = false, length = 255)
     public String getVariable() {
         return variable;
     }
 
     public void setVariable(String variable) {
         this.variable = variable;
+    }
+
+    public FormEntity getForm() {
+        return form;
+    }
+
+    public void setForm(FormEntity form) {
+        this.form = form;
     }
 
     @Override
