@@ -2,16 +2,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
     <parent>
         <groupId>net.wasdev.wlp.maven.parent</groupId>
         <artifactId>liberty-maven-app-parent</artifactId>
         <version>2.1.2</version>
         <relativePath>../</relativePath>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>redcapd</groupId>
-    <artifactId>metadatamanager</artifactId>
+
+    <groupId>groupId</groupId>
+    <artifactId>uimanager</artifactId>
     <version>1.0-SNAPSHOT</version>
+
     <packaging>war</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -25,7 +28,7 @@
         <version.maven-failsafe-plugin>2.19.1</version.maven-failsafe-plugin>
         <!-- OpenLiberty runtime -->
         <version.openliberty-runtime>RELEASE</version.openliberty-runtime>
-        <http.port>9080</http.port>
+        <http.port>9081</http.port>
         <https.port>9443</https.port>
         <packaging.type>usr</packaging.type>
         <app.name>${project.artifactId}</app.name>
@@ -105,6 +108,12 @@
             <type>esa</type>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>io.openliberty.features</groupId>
+            <artifactId>jsf-2.3</artifactId>
+            <type>esa</type>
+            <scope>provided</scope>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-crypto -->
         <dependency>
             <groupId>org.springframework.security</groupId>
@@ -150,7 +159,7 @@
                         <version>${version.openliberty-runtime}</version>
                         <type>zip</type>
                     </assemblyArtifact>
-                    <serverName>MetadataManagerServer</serverName>
+                    <serverName>UiManagerServer</serverName>
                     <stripVersion>true</stripVersion>
                     <configFile>src/main/liberty/config/server.xml</configFile>
                     <!-- tag::loose-app[] -->

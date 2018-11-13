@@ -31,7 +31,7 @@ public class UserManagerDao implements Serializable {
 
 	public User getUserByUsername(String username) {
 		try{
-			UserEntity user = entityManager.find(UserEntity.class, username);
+			UserEntity user = entityManager.createQuery("FROM UserEntity WHERE username = :username", UserEntity.class).setParameter("username",username).getSingleResult();
 			return user.toUser();
 		}
 		catch(EntityNotFoundException e){
@@ -55,7 +55,7 @@ public class UserManagerDao implements Serializable {
 		user.setPassword(psw);
 		user.setEmail(email);
 		user.setLanguageId(lang);
-		user.setSalt(BCrypt.gensalt());// Generazione del salt
+		user.setSalt(BCrypt.hashpw(psw,BCrypt.gensalt()));// Generazione del salt
 		try{
 			transaction.begin();
 			entityManager.persist(user);
@@ -66,9 +66,6 @@ public class UserManagerDao implements Serializable {
 			e.printStackTrace();
 			transaction.rollback();
 			return -1;
-		}
-		finally{
-			entityManager.close();
 		}
 	}
 

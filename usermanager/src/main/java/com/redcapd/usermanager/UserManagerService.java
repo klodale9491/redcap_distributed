@@ -29,9 +29,9 @@ public class UserManagerService {
     public Response authUser(@FormParam("usr") String usr,
                              @FormParam("psw") String psw) {
         try{
-            JsonWebEncryption jsonToken = authenticationController.authenticateUser(usr,psw);
+            String jsonToken = authenticationController.authenticateUser(usr,psw);
             // Stacco il token ...
-            return null;
+            return Response.status(200).entity(jsonToken).build();
 
         }
         catch(EntityNotFoundException e){

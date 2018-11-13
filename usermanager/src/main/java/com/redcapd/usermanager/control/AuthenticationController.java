@@ -14,8 +14,8 @@ public class AuthenticationController {
     UserManagerDao userManagerDao;
 
 
-    public JsonWebEncryption authenticateUser(String username, String password){
+    public String authenticateUser(String username, String password){
         User user = userManagerDao.getUserByUsername(username);
-        return null;
+        return user.authenticate(password);
     }
 }

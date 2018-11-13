@@ -62,9 +62,9 @@ public class User {
     //
     // Metodo di autenticazione
     //
-    public JsonWebEncryption isAuthenticated(String password){
+    public String authenticate(String password){
         String hash = BCrypt.hashpw(password,this.getSalt());
-        if(this.password.equals(hash)){
+        if(this.getSalt().equals(hash)){
             return generateToken();
         }
         return null;
@@ -74,16 +74,17 @@ public class User {
     //
     // Metodo di creazione del token
     //
-    public JsonWebEncryption generateToken(){
-        Key key = new AesKey(ByteUtil.randomBytes(16));
+    public String generateToken(){
+        Key key = new AesKey("AltissimoLivello".getBytes());
         JsonWebEncryption jwe = new JsonWebEncryption();
         jwe.setPayload(this.getUsername());
+        jwe.setCertificateChainHeaderValue();
         jwe.setAlgorithmHeaderValue(KeyManagementAlgorithmIdentifiers.A128KW);
         jwe.setEncryptionMethodHeaderParameter(ContentEncryptionAlgorithmIdentifiers.AES_128_CBC_HMAC_SHA_256);
         jwe.setKey(key);
         try{
             String serializedJwe = jwe.getCompactSerialization();
-            return jwe;
+            return serializedJwe;
         }
         catch (JoseException e){
             e.printStackTrace();
