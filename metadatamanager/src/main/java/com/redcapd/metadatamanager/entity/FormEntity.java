@@ -15,7 +15,7 @@ public class FormEntity {
     private String name;
     @ManyToOne
     private ProjectEntity project;
-    @OneToMany
+    @OneToMany(mappedBy = "form", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<FieldEntity> fields;
 
     public long getId() {
@@ -48,9 +48,5 @@ public class FormEntity {
 
     public void setFields(List<FieldEntity> fields) {
         this.fields = fields;
-    }
-
-    public String toString(){
-        return String.format("ID : %d, Name : %s, Project_Id : %d", this.id,this.name,this.project.getId());
     }
 }

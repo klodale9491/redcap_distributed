@@ -1,7 +1,6 @@
 package com.redcapd.metadatamanager.boundary;
 
 import com.redcapd.metadatamanager.entity.FieldEntity;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -45,23 +44,29 @@ public class FieldService {
         return Response.status(200).build();
     }
 
-    @DELETE
-    @Produces("application/json")
-    public Response deleteAllFormField(){
-        return null;
-    }
 
     @DELETE
     @Path("{ffid}")
     @Produces("application/json")
-    public Response deleteFormField(@PathParam("ffid") long id){
-        return null;
+    public Response deleteFormField(@PathParam("ffid") long ffid){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("MyPersistenceUnit");
+        em = emf.createEntityManager();
+        em.getTransaction().begin();
+        FieldEntity field = em.find(FieldEntity.class,ffid);
+        em.remove(field); // fa DELETE
+        em.getTransaction().commit();
+        return Response.status(200).build();
     }
 
     @PUT
     @Consumes("application/json")
     @Produces("application/json")
-    public Response updateForm(FieldEntity field){
-        return null;
+    public Response updateField(FieldEntity field){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("MyPersistenceUnit");
+        em = emf.createEntityManager();
+        em.getTransaction().begin();
+        em.merge(field);// se metto id fa UPDATE, altrimenti da INSERT
+        em.getTransaction().commit();
+        return Response.status(200).build();
     }
 }

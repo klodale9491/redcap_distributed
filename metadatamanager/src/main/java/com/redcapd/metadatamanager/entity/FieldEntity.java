@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class FieldEntity {
     @Id
     @Column(name = "id", nullable = false)
-    private int id;
+    private long id;
     @Basic
     @Column(name = "label", nullable = false, length = 255)
     private String label;
@@ -18,7 +18,7 @@ public class FieldEntity {
     private FormEntity form;
 
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -48,27 +48,5 @@ public class FieldEntity {
 
     public void setForm(FormEntity form) {
         this.form = form;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        FieldEntity that = (FieldEntity) o;
-
-        if (id != that.id) return false;
-        if (label != null ? !label.equals(that.label) : that.label != null) return false;
-        if (variable != null ? !variable.equals(that.variable) : that.variable != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + (label != null ? label.hashCode() : 0);
-        result = 31 * result + (variable != null ? variable.hashCode() : 0);
-        return result;
     }
 }

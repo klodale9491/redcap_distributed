@@ -3,6 +3,7 @@
     <persistence-unit name="MyPersistenceUnit" transaction-type="JTA">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <class>com.redcapd.metadatamanager.entity.FormEntity</class>
+        <class>com.redcapd.metadatamanager.entity.FieldEntity</class>
         <class>com.redcapd.metadatamanager.entity.ProjectEntity</class>
         <properties>
             <property name="hibernate.connection.url" value="jdbc:mysql://localhost/redcapd"/>
