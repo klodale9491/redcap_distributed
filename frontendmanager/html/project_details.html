@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+
+    <style>
+        .material-icons{
+            font-size:18px;
+            color:black;
+        }
+    </style>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="../js/bootstrap.js"></script>
+    <!-- Custom JS -->
+    <script src="../js/jquery.cookie.js"></script>
+    <script src="../js/user_service.js"></script>
+    <script src="../js/metadata_service.js"></script>
+    <script>
+        $(document).ready(function(){
+            var urlParams = new URLSearchParams(location.search);
+            if(urlParams.has('pid')){
+                get_project_by_id(urlParams.get('pid'));
+            }
+        });
+    </script>
+    <title>Redcapd - Gestione Progetti</title>
+</head>
+<body>
+<div class="container">
+    <br>
+    <h2>Dettagli Progetto</h2>
+    <br>
+    <label for="project_name_id">Nome</label>
+    <input name = "name" type="text" class="form-control" id ="project_name_id" placeholder="Nome del progetto" required>
+    <br>
+    <label for="project_description_id">Descrizione</label>
+    <textarea name = "description" class="form-control" id="project_description_id" rows="3" placeholder="Descrizione"></textarea>
+    <br>
+    <h4>Lista forms progetto</h4>
+    <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">Nome</th>
+            <th scope="col">
+                <div style="float:right">
+                    <button type="button" class="btn" style="background-color: #2ecc71;" data-toggle="modal" data-target="#exampleModal"><i class="material-icons" style="color:white">add</i></button>
+                </div>
+            </th>
+        </tr>
+        </thead>
+        <tbody id="form_table">
+        <!--
+            <tr>
+                <td scope="row" style="line-height: 30px;">Progetto di prova</td>
+                <td>
+                    <div style="float:right">
+                        <button type="button" class="btn btn-light"><i class="material-icons" style="color:#3498db">info</i></button>
+                        <button type="button" class="btn btn-light"><i class="material-icons">edit</i></button>
+                        <button type="button" class="btn btn-light"><i class="material-icons" style="color:#e74c3c">delete</i></button>
+                    </div>
+                </td>
+            </tr>
+            -->
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

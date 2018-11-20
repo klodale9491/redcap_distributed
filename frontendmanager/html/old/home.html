@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Home</title>
+        <head>
+            <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"
+                  id="bootstrap-css">
+            <link href="../../css/bootstrap.min.css" rel="stylesheet" id="login-css">
+            <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+            <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+            <script src="../../js/user_service.js"></script>
+            <script src="../../js/metadata_service.js"></script>
+            <script src="../../js/jquery.cookie.js"></script>
+            <!------ Include the above in your HEAD tag ---------->
+            <script>
+                // caricamento dei progetti dell'utente
+                $(document).ready(function () {
+                    get_projects();
+                });
+            </script>
+        </head>
+    </head>
+    <body>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h3>Progetti</h3>
+                <div class="btn-group" role="group" aria-label="Basic example" style="padding-bottom: 30px">
+                    <button class="btn btn-xs btn-success" onclick="alert('delete...')">
+                        Nuovo progetto
+                    </button>
+                </div>
+                <div class="list-group">
+                    <div id = "project_listview" class="list-group">
+                        <!--<a href="#" class="list-group-item clearfix" onclik="alert('open..')">
+                            <span class="glyphicon glyphicon-file"></span>
+                                Nome del progetto.
+                                <span class="pull-right">
+                                <button class="btn btn-xs btn-info" onclick="alert('edit...')">
+                                  <span class="glyphicon glyphicon-edit"></span>
+                                </button>
+                                <button class="btn btn-xs btn-danger" onclick="alert('delete...')">
+                                  <span class="glyphicon glyphicon-trash"></span>
+                                </button>
+                          </span>
+                        </a>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Moodal per la creazione del nuovo form -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Nuovo Progetto</h5>
+                    <
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                    <button type="button" class="btn btn-primary">Salva</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </body>
+</html>

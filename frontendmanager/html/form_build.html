@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" ></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" ></script>
+
+        <link rel="stylesheet" href="js/basscss.css">
+        <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+        <script src="../js/html5sortable.js"></script>
+
+        <!-- Custom JS -->
+        <script src="../js/jquery.cookie.js"></script>
+        <script src="../js/user_service.js"></script>
+        <script src="../js/metadata_service.js"></script>
+
+        <style>
+            .material-icons{
+                font-size:18px;
+                color:black;
+            }
+
+            .component{
+                background-color:white;
+                border:1px solid darkgrey;
+            }
+        </style>
+
+        <title>Redcapd - Gestione Form Progetti</title>
+    </head>
+    <body>
+        <div class="container">
+
+            <div class="row">
+
+                <!-- Sezione a sinistra -->
+                <div class="col col-xs-12 col-sm-6">
+
+                    <br>
+                    <h2>Composizione del form</h2>
+                    <br>
+
+                    <ul class="js-sortable sortable flex flex-column list-reset" aria-dropeffect="move">
+                        <!-- Item -->
+                        <li class="p1 mb1 navy component" style="position: relative; z-index: 10" draggable="true" role="option" aria-grabbed="false">
+                            <div class="row" style="margin:0">
+                                <div class="col col-xs-10 col-sm-10" style="padding:0">
+                                    <p>Qua ci metti tutto lo schifo che vuoi</p>
+                                </div>
+                                <div class="col col-xs-2" style="padding:6px 5px"><a href="#" style="float:right;"><i class="material-icons" style="color:#e74c3c">delete</i></a></div>
+                            </div>
+                        </li>
+                        
+                        <!-- Item -->
+                        <li class="p1 mb1 navy component" style="position: relative; z-index: 10" draggable="true" role="option" aria-grabbed="false">
+                            <div class="row" style="margin:0">
+                                <div class="col col-xs-10 col-sm-10" style="padding:0">
+                                    <p>Qua ci metti tutto lo schifo che di nuovo</p>
+                                </div>
+                                <div class="col col-xs-2" style="padding:6px 5px"><a href="#" style="float:right;"><i class="material-icons" style="color:#e74c3c">delete</i></a></div>
+                            </div>
+                        </li>
+                        
+                        <!-- Item -->
+                        <li class="p1 mb1 navy component" style="position: relative; z-index: 10" draggable="true" role="option" aria-grabbed="false">
+                            <div class="row" style="margin:0">
+                                <div class="col col-xs-10 col-sm-10" style="padding:0">
+                                    <p>Questo fa ancora più schifo</p>
+                                </div>
+                                <div class="col col-xs-2" style="padding:6px 5px"><a href="#" style="float:right;"><i class="material-icons" style="color:#e74c3c">delete</i></a></div>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <script type="text/javascript">
+                        sortable('.js-sortable', {
+                            forcePlaceholderSize: true,
+                            placeholderClass: 'border',
+                            hoverClass: 'red',
+                            itemSerializer: function (item, container) {
+                                item.parent = '[parentNode]'
+                                item.node = '[Node]'
+                                item.html = item.html.replace('<','&lt;')
+                                return item
+                            },
+                            containerSerializer: function (container) {
+                                container.node = '[Node]'
+                                return container
+                            }
+                        })
+                        document.querySelector('.js-serialize-button').addEventListener('click', function () {
+                            let serialized = sortable('.js-sortable', 'serialize')
+                            document.querySelector('.serialized-content').innerHTML = JSON.stringify(serialized, null, ' ')
+                        })
+                    </script>
+
+                </div>
+
+                <!-- Sezione a destra -->
+                <div class="col col-xs-12 col-sm-6">
+                    <br>
+                    <h2 style="text-align: right">Elementi da droppare</h2>
+                    <br>
+
+                    <ul class="list-reset">
+                        <li class="p1 mb1 navy component" style="position: relative; z-index: 10" draggable="true" role="option" aria-grabbed="false">
+                            <p>Qua ci metti gli elementi da poter copiare</p>
+                        </li>
+                        <li class="p1 mb1 navy component" style="position: relative; z-index: 10" draggable="true" role="option" aria-grabbed="false">Item 2</li>
+                        <li class="p1 mb1 navy component" style="position: relative; z-index: 10" draggable="true" role="option" aria-grabbed="false">Item 3</li>
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div><!-- fine container -->
+    </body>
+</html>
