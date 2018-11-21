@@ -15,26 +15,30 @@ public class FieldService {
 
     @GET
     @Produces("application/json")
+    @Secured
     public Response getAllFormFields(@PathParam("fid") long fid){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("MyPersistenceUnit");
         em = emf.createEntityManager();
-        List fields = em.createNativeQuery("SELECT label,variable FROM field WHERE field.form_id = :fid").setParameter("fid", fid).getResultList();
+        List fields = em.createNativeQuery("SELECT * FROM  field WHERE field.form_id = :fid",FieldEntity.class).setParameter("fid", fid).getResultList();
         return Response.status(200).entity(fields).build();
     }
 
     @GET
     @Produces("application/json")
     @Path("{ffid}")
+    @Secured
     public Response getFormFieldById(@PathParam("ffid") long ffid){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("MyPersistenceUnit");
         em = emf.createEntityManager();
-        List fields = em.createNativeQuery("SELECT label,variable FROM field WHERE field.id = :ffid").setParameter("ffid", ffid).getResultList();
-        return Response.status(200).entity(fields).build();
+        //List fields = em.createNativeQuery("SELECT label,variable FROM field WHERE field.id = :ffid").setParameter("ffid", ffid).getResultList();
+        FieldEntity field = em.find(FieldEntity.class,ffid);
+        return Response.status(200).entity(field).build();
     }
 
     @POST
     @Consumes("application/json")
     @Produces("application/json")
+    @Secured
     public Response creteFormField(FieldEntity field){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("MyPersistenceUnit");
         em = emf.createEntityManager();
@@ -48,6 +52,7 @@ public class FieldService {
     @DELETE
     @Path("{ffid}")
     @Produces("application/json")
+    @Secured
     public Response deleteFormField(@PathParam("ffid") long ffid){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("MyPersistenceUnit");
         em = emf.createEntityManager();
@@ -61,6 +66,7 @@ public class FieldService {
     @PUT
     @Consumes("application/json")
     @Produces("application/json")
+    @Secured
     public Response updateField(FieldEntity field){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("MyPersistenceUnit");
         em = emf.createEntityManager();

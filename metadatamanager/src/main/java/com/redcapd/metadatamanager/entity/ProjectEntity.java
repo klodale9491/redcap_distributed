@@ -1,6 +1,7 @@
 package com.redcapd.metadatamanager.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -8,22 +9,27 @@ import java.util.List;
 public class ProjectEntity {
     @Id
     @Column(name = "id", nullable = false)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     @Basic
     @Column(name = "name", nullable = false, length = 255)
     private String name;
     @Basic
     @Column(name = "description", nullable = true, length = -1)
     private String description;
-    @OneToMany
-    private List<FormEntity> forms;
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @JoinColumn(name = "project_id")
+    private List<FormEntity> forms = new ArrayList<>();
 
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -43,9 +49,7 @@ public class ProjectEntity {
         this.description = description;
     }
 
-    public List<FormEntity> getForms() {
-        return forms;
-    }
+    public List<FormEntity> getForms() { return forms; }
 
     public void setForms(List<FormEntity> forms) {
         this.forms = forms;

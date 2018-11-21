@@ -1,6 +1,8 @@
 package com.redcapd.metadatamanager.entity;
 
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -13,10 +15,19 @@ public class FormEntity {
     private long id;
     @Column(name = "name")
     private String name;
-    @ManyToOne
-    private ProjectEntity project;
-    @OneToMany(mappedBy = "form", orphanRemoval = true, cascade = CascadeType.ALL)
-    private List<FieldEntity> fields;
+    /*
+    * Relazione bidirezionale lato padre : . Il mapped-by
+    * deve essere usata nella tabella padre, specificando
+    * il nome della variabile JAVA nel figlio che si riferisce
+    * al padre.
+    * */
+    @OneToMany(
+            mappedBy = "form",
+            orphanRemoval = true,
+            cascade = CascadeType.REMOVE
+    )
+    private List<FieldEntity> fields = new ArrayList<>();
+
 
     public long getId() {
         return id;
@@ -34,14 +45,6 @@ public class FormEntity {
         this.name = name;
     }
 
-    public ProjectEntity getProject() {
-        return project;
-    }
-
-    public void setProject(ProjectEntity project) {
-        this.project = project;
-    }
-
     public List<FieldEntity> getFields() {
         return fields;
     }
@@ -49,4 +52,5 @@ public class FormEntity {
     public void setFields(List<FieldEntity> fields) {
         this.fields = fields;
     }
+
 }
