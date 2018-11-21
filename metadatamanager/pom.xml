@@ -25,7 +25,7 @@
         <version.maven-failsafe-plugin>2.19.1</version.maven-failsafe-plugin>
         <!-- OpenLiberty runtime -->
         <version.openliberty-runtime>RELEASE</version.openliberty-runtime>
-        <http.port>9080</http.port>
+        <http.port>9081</http.port>
         <https.port>9443</https.port>
         <packaging.type>usr</packaging.type>
         <app.name>${project.artifactId}</app.name>
@@ -93,7 +93,6 @@
             <version>0.6.4</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.json/json -->
-
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
@@ -102,6 +101,12 @@
         <dependency>
             <groupId>io.openliberty.features</groupId>
             <artifactId>jaxrs-2.1</artifactId>
+            <type>esa</type>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.openliberty.features</groupId>
+            <artifactId>jsonb-1.0</artifactId>
             <type>esa</type>
             <scope>provided</scope>
         </dependency>
