@@ -97,6 +97,5 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         this.userData.setUserId((Long)claim.getClaimsMap().get("userid"));
         this.userData.setUserName(claim.getClaimsMap().get("username").toString());
         this.userData.setUserRole(claim.getClaimsMap().get("userrole").toString());
-        return;
     }
 }

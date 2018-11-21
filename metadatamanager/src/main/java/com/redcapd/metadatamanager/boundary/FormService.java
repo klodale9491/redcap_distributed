@@ -15,7 +15,6 @@ public class FormService {
 
     @GET
     @Produces("application/json")
-    @Secured
     public Response getFormsByProject(@QueryParam("pid") long pid) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("MyPersistenceUnit");
         em = emf.createEntityManager();
@@ -26,7 +25,6 @@ public class FormService {
     @GET
     @Path("{fid}")
     @Produces("application/json")
-    @Secured
     public Response getFormById(@PathParam("fid") long fid){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("MyPersistenceUnit");
         em = emf.createEntityManager();
@@ -38,7 +36,6 @@ public class FormService {
     @POST
     @Consumes("application/json")
     @Produces("application/json")
-    @Secured
     public Response creteForm(FormEntity form){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("MyPersistenceUnit");
         em = emf.createEntityManager();
@@ -51,7 +48,6 @@ public class FormService {
     @DELETE
     @Path("{id}")
     @Produces("application/json")
-    @Secured
     public Response deleteForm(@PathParam("id") long id){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("MyPersistenceUnit");
         em = emf.createEntityManager();
@@ -65,7 +61,6 @@ public class FormService {
     @PUT
     @Consumes("application/json")
     @Produces("application/json")
-    @Secured
     public Response updateForm(FormEntity form){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("MyPersistenceUnit");
         em = emf.createEntityManager();

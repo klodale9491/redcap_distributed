@@ -1,12 +1,8 @@
 package com.redcapd.metadatamanager.boundary;
 
 import com.redcapd.metadatamanager.entity.ProjectEntity;
-
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -26,9 +22,22 @@ public class ProjectService {
     public Response createProject(ProjectEntity p){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("MyPersistenceUnit");
         entityManager = emf.createEntityManager();
-        entityManager.getTransaction().begin();
-        entityManager.persist(p);
-        entityManager.getTransaction().commit();
+        try{
+            entityManager.getTransaction().begin();
+            entityManager.persist(p);
+            entityManager.flush();
+            entityManager.createNativeQuery(
+                    "INSERT INTO project_user(project_id, user_id) VALUES (?,?)")
+                    .setParameter(1,p.getId())
+                    .setParameter(2, this.userData.getUserId())
+                    .executeUpdate();
+            entityManager.getTransaction().commit();
+        }
+        catch(RuntimeException ex){
+            if(entityManager.getTransaction() != null){
+                entityManager.getTransaction().rollback();
+            }
+        }
         return Response.status(200).build();
     }
 
@@ -48,7 +57,6 @@ public class ProjectService {
     @GET
     @Produces("application/json")
     @Path("{pid}")
-    @Secured
     public Response getProjectById(@PathParam("pid") long pid){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("MyPersistenceUnit");
         entityManager = emf.createEntityManager();
@@ -59,7 +67,6 @@ public class ProjectService {
     @PUT
     @Produces("application/json")
     @Consumes("application/json")
-    @Secured
     public Response updateProject(ProjectEntity project){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("MyPersistenceUnit");
         entityManager = emf.createEntityManager();
@@ -76,10 +83,21 @@ public class ProjectService {
     public Response deleteProject(@PathParam("id") long id){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("MyPersistenceUnit");
         entityManager = emf.createEntityManager();
-        entityManager.getTransaction().begin();
-        ProjectEntity project = entityManager.find(ProjectEntity.class,id);
-        entityManager.remove(project); // fa DELETE
-        entityManager.getTransaction().commit();
+        try{
+            entityManager.getTransaction().begin();
+            // Rimozione dalla tabella di appoggio
+            entityManager.createNativeQuery("DELETE FROM project_user WHERE project_id = :id")
+                    .setParameter("id", id)
+                    .executeUpdate();
+            ProjectEntity project = entityManager.find(ProjectEntity.class,id);
+            entityManager.remove(project); // fa DELETE
+            entityManager.getTransaction().commit();
+        }
+        catch(RuntimeException ex){
+            if(entityManager.getTransaction() != null){
+                entityManager.getTransaction().rollback();
+            }
+        }
         return Response.status(200).build();
     }
 }
