@@ -3,6 +3,7 @@ package com.redcapd.usermanager.entity;
 import org.jose4j.jwe.ContentEncryptionAlgorithmIdentifiers;
 import org.jose4j.jwe.JsonWebEncryption;
 import org.jose4j.jwe.KeyManagementAlgorithmIdentifiers;
+import org.jose4j.jwt.JwtClaims;
 import org.jose4j.keys.AesKey;
 import org.jose4j.lang.ByteUtil;
 import org.jose4j.lang.JoseException;
@@ -12,6 +13,10 @@ import java.security.Key;
 
 
 public class User {
+    private int userId;
+
+
+
     private String username;
     private String password;
     private String salt;
@@ -59,6 +64,14 @@ public class User {
         this.language_id = language_id;
     }
 
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
     //
     // Metodo di autenticazione
     //
@@ -76,8 +89,12 @@ public class User {
     //
     public String generateToken(){
         Key key = new AesKey("AltissimoLivello".getBytes());
+        JwtClaims claims = new JwtClaims();
+        claims.setClaim("userid",this.getUserId());
+        claims.setClaim("username",this.getUsername());
+        claims.setClaim("userrole","user");
         JsonWebEncryption jwe = new JsonWebEncryption();
-        jwe.setPayload(this.getUsername());
+        jwe.setPayload(claims.toJson());
         jwe.setCertificateChainHeaderValue();
         jwe.setAlgorithmHeaderValue(KeyManagementAlgorithmIdentifiers.A128KW);
         jwe.setEncryptionMethodHeaderParameter(ContentEncryptionAlgorithmIdentifiers.AES_128_CBC_HMAC_SHA_256);

@@ -102,6 +102,7 @@ public class UserEntity {
 
     public User toUser(){
         User user = new User();
+        user.setUserId(this.id);
         user.setUsername(this.username);
         user.setPassword(this.password);
         user.setEmail(this.email);

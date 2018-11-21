@@ -3,7 +3,6 @@ package com.redcapd.usermanager;
 
 import com.redcapd.usermanager.control.AuthenticationController;
 import com.redcapd.usermanager.entity.UserEntity;
-import org.jose4j.jwe.JsonWebEncryption;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import javax.inject.Inject;
@@ -19,13 +18,12 @@ public class UserManagerService {
     @Inject
     private UserManagerDao userManagerDao;
     @Inject
-
     private AuthenticationController authenticationController;
 
 
     @POST
     @Path("auth")
-    @Produces("application/json")
+    @Produces("text/html")
     public Response authUser(@FormParam("usr") String usr,
                              @FormParam("psw") String psw) {
         try{
