@@ -5,8 +5,8 @@
 <script>
     $(document).ready(function(){
        var token_value = $.cookie("token");
-       if(token_value !== ""){
-           location.href = "home.html";
+        if (typeof token_value != 'undefined'){
+           location.href = "index.html";
        }
     });
 </script>

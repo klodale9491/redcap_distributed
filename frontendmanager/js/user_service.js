@@ -12,7 +12,7 @@ function login(usr,psw){
     }).done(function(data){
         if(data.toString() != ""){
             $.cookie("token",data.toString());
-            location.href = "home.html";
+            location.href = "index.html";
         }
         else{
             alert("Accesso Negato")
