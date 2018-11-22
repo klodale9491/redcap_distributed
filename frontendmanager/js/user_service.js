@@ -21,3 +21,8 @@ function login(usr,psw){
         alert("fail")
     });
 }
+
+function logout() {
+    $.removeCookie("token");
+    location.href = "login.html";
+}

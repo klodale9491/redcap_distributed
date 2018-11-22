@@ -32,7 +32,6 @@ public class FieldEntity {
     * */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "form_id")
-
     private FormEntity form;
 
 

@@ -1,6 +1,7 @@
 package com.redcapd.metadatamanager.entity;
 
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +14,13 @@ public class FormEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
+
     @Column(name = "name")
     private String name;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id")
+    private ProjectEntity project;
     /*
     * Relazione bidirezionale lato padre : . Il mapped-by
     * deve essere usata nella tabella padre, specificando
@@ -51,6 +57,15 @@ public class FormEntity {
 
     public void setFields(List<FieldEntity> fields) {
         this.fields = fields;
+    }
+
+    @JsonbTransient
+    public ProjectEntity getProject() {
+        return project;
+    }
+
+    public void setProject(ProjectEntity project) {
+        this.project = project;
     }
 
 }

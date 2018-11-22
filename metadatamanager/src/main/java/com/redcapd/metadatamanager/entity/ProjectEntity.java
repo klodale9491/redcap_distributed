@@ -1,6 +1,10 @@
 package com.redcapd.metadatamanager.entity;
 
+import org.hibernate.annotations.DynamicUpdate;
+
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,10 +22,11 @@ public class ProjectEntity {
     @Column(name = "description", nullable = true, length = -1)
     private String description;
     @OneToMany(
-            cascade = CascadeType.ALL,
+            mappedBy = "project",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.REMOVE,
             orphanRemoval = true
     )
-    @JoinColumn(name = "project_id")
     private List<FormEntity> forms = new ArrayList<>();
 
 

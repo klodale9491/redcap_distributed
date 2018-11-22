@@ -13,8 +13,8 @@ function get_projects(){
             json_projects = json_projects.responseJSON;
             if(json_projects !== undefined){
                 for(var i = 0; i < json_projects.length; i++){
-                    var project_id = json_projects[i][0];
-                    var project_name = json_projects[i][1];
+                    var project_id = json_projects[i]["id"];
+                    var project_name = json_projects[i]["name"];
                     var project_html = '<tr>\n' +
                         '                        <td onclick = "location.href=\'project_details.html?pid='+project_id+'\'" scope="row" style="line-height: 30px;">'+project_name+'</td>\n' +
                         '                        <td>\n' +
@@ -173,6 +173,34 @@ function delete_project(project_id){
     });
 }
 
+function create_form(name) {
+    var token_value = $.cookie("token");
+    var microservice_url = "http://localhost:9081/metadatamanager/api/forms/";
+    var urlParams = new URLSearchParams(location.search);
+    if (urlParams.has("pid")) {
+        $.ajax({
+            type: "POST",
+            url: microservice_url,
+            headers : {"Authorization" : "Bearer " + token_value},
+            dataType: 'json',
+            contentType : 'application/json',
+            data: JSON.stringify(
+                {
+                        name:name,
+                        project:{
+                            id:urlParams.get("pid")
+                        }
+                }),
+            success: function(data) {
+                alert("Form inserito");
+            },
+            complete:function(){
+                location.reload();
+            }
+        });
+    }
+}
+
 function delete_form_wrapper(form_id){
     if(confirm("Sei sicuro di cancellare il form e tutti i dati ad esso associati?")){
         delete_form(form_id);
@@ -205,7 +233,7 @@ function delete_field(field_id){
     var urlParams = new URLSearchParams(location.search);
     if(urlParams.has('fid')){
         var token_value = $.cookie("token");
-        var form_id = urlParams.has('fid');
+        var form_id = urlParams.get('fid');
         var microservice_url = "http://localhost:9081/metadatamanager/api/forms/"+form_id+'/fields/'+field_id;
         $.ajax({
             url: microservice_url,

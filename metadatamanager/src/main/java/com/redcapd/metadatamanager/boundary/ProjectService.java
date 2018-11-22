@@ -19,16 +19,16 @@ public class ProjectService {
     @Produces("application/json")
     @Consumes("application/json")
     @Secured
-    public Response createProject(ProjectEntity p){
+    public Response createProject(ProjectEntity project){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("MyPersistenceUnit");
         entityManager = emf.createEntityManager();
         try{
             entityManager.getTransaction().begin();
-            entityManager.persist(p);
+            entityManager.persist(project);
             entityManager.flush();
             entityManager.createNativeQuery(
                     "INSERT INTO project_user(project_id, user_id) VALUES (?,?)")
-                    .setParameter(1,p.getId())
+                    .setParameter(1, project.getId())
                     .setParameter(2, this.userData.getUserId())
                     .executeUpdate();
             entityManager.getTransaction().commit();
@@ -48,7 +48,7 @@ public class ProjectService {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("MyPersistenceUnit");
         entityManager = emf.createEntityManager();
         entityManager.getTransaction().begin();
-        List projects = entityManager.createNativeQuery("SELECT id,name,description FROM project INNER JOIN project_user ON project.id = project_user.project_id WHERE project_user.user_id  = :uid")
+        List projects = entityManager.createNativeQuery("SELECT project.* FROM project INNER JOIN project_user ON project.id = project_user.project_id WHERE project_user.user_id  = :uid", ProjectEntity.class)
                 .setParameter("uid",this.userData.getUserId()).getResultList();
         entityManager.getTransaction().commit();
         return Response.status(200).entity(projects).build();
@@ -57,6 +57,7 @@ public class ProjectService {
     @GET
     @Produces("application/json")
     @Path("{pid}")
+    @Secured
     public Response getProjectById(@PathParam("pid") long pid){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("MyPersistenceUnit");
         entityManager = emf.createEntityManager();
@@ -67,6 +68,7 @@ public class ProjectService {
     @PUT
     @Produces("application/json")
     @Consumes("application/json")
+    @Secured
     public Response updateProject(ProjectEntity project){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("MyPersistenceUnit");
         entityManager = emf.createEntityManager();
